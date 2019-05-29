@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import SearchBar from '../components/searchBar'
 import VideoList from './videoList'
 import VideoDetail from '../components/videoDetail'
+import Video from '../components/video'
 import axios from 'axios'
 
 const API_END_POINT = "https://api.themoviedb.org/3/"
@@ -20,8 +21,10 @@ class App extends Component {
 
     initMovies(){
         axios.get(`${API_END_POINT}${POPULAR_MOVIES_URL}&${API_KEY}`)
-            .then(function(res) {
-                this.setState({ movieList: res.data.results.slice(1, 6), currentMovies: res.data.results[0] }, function(){                   
+             .then(function(res) {
+                this.setState({ movieList: res.data.results.slice(1, 6),    
+                                currentMovies: res.data.results[0]
+                }, function(){                   
                     this.applyVideoToCurrent();
                 });
             }.bind(this));
@@ -37,9 +40,6 @@ class App extends Component {
                 let newCurrentMovieState = this.state.currentMovies;
                 newCurrentMovieState.videoId = youtubeKey;
                 this.setState({currentMovies: newCurrentMovieState});
-                console.log('------------------');
-                console.log('', newCurrentMovieState);
-                console.log('------------------');
             }.bind(this));
     }
 
@@ -52,6 +52,7 @@ class App extends Component {
         return (
             <div>
                 <SearchBar/>
+                <Video videoId={this.state.currentMovies.videoId}/>
                 {renderVideoList()}
                 <VideoDetail title={this.state.currentMovies.title} description={this.state.currentMovies.overview}/>
             </div>
