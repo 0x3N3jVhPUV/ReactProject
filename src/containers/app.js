@@ -33,9 +33,6 @@ class App extends Component {
     applyVideoToCurrent(){
         axios.get(`${API_END_POINT}movie/${this.state.currentMovies.id}/videos?${API_KEY}&language=en-US`)
              .then(function(res){
-                console.log('------------------');
-                console.log('tutu', res);
-                console.log('------------------');
                 const youtubeKey = res.data.results[0].key;
                 let newCurrentMovieState = this.state.currentMovies;
                 newCurrentMovieState.videoId = youtubeKey;
@@ -51,10 +48,18 @@ class App extends Component {
         }
         return (
             <div>
-                <SearchBar/>
-                <Video videoId={this.state.currentMovies.videoId}/>
-                {renderVideoList()}
-                <VideoDetail title={this.state.currentMovies.title} description={this.state.currentMovies.overview}/>
+                <div className="search_bar">
+                    <SearchBar/>
+                </div>
+                <div className="row">
+                    <div className='col-md-8'>
+                        <Video videoId={this.state.currentMovies.videoId}/>
+                        <VideoDetail title={this.state.currentMovies.title} description={this.state.currentMovies.overview} />
+                    </div>
+                    <div className='col-md-4'>
+                        {renderVideoList()}
+                    </div>
+                </div>
             </div>
         );
     }
